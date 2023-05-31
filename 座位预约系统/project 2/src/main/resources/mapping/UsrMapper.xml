@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UsrMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Usr">
+    <id column="usr_id" jdbcType="INTEGER" property="usrId" />
+    <result column="usr_username" jdbcType="VARCHAR" property="usrUsername" />
+    <result column="usr_email" jdbcType="VARCHAR" property="usrEmail" />
+    <result column="usr_password" jdbcType="VARCHAR" property="usrPassword" />
+    <result column="usr_type" jdbcType="CHAR" property="usrType" />
+    <result column="usr_notification_method" jdbcType="CHAR" property="usrNotificationMethod" />
+    <result column="usr_violation_count" jdbcType="INTEGER" property="usrViolationCount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    usr_id, usr_username, usr_email, usr_password, usr_type, usr_notification_method, 
+    usr_violation_count
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo.entity.UsrExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from usr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from usr
+    where usr_id = #{usrId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from usr
+    where usr_id = #{usrId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.entity.UsrExample">
+    delete from usr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.Usr" useGeneratedKeys="true" keyColumn="usr_id" keyProperty="usrId">
+    insert into usr (usr_username, usr_email,
+      usr_password, usr_type, usr_notification_method, 
+      usr_violation_count)
+    values (#{usrUsername,jdbcType=VARCHAR}, #{usrEmail,jdbcType=VARCHAR},
+      #{usrPassword,jdbcType=VARCHAR}, #{usrType,jdbcType=CHAR}, #{usrNotificationMethod,jdbcType=CHAR}, 
+      #{usrViolationCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.entity.Usr">
+    insert into usr
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="usrId != null">
+        usr_id,
+      </if>
+      <if test="usrUsername != null">
+        usr_username,
+      </if>
+      <if test="usrEmail != null">
+        usr_email,
+      </if>
+      <if test="usrPassword != null">
+        usr_password,
+      </if>
+      <if test="usrType != null">
+        usr_type,
+      </if>
+      <if test="usrNotificationMethod != null">
+        usr_notification_method,
+      </if>
+      <if test="usrViolationCount != null">
+        usr_violation_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="usrId != null">
+        #{usrId,jdbcType=INTEGER},
+      </if>
+      <if test="usrUsername != null">
+        #{usrUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="usrEmail != null">
+        #{usrEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="usrPassword != null">
+        #{usrPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usrType != null">
+        #{usrType,jdbcType=CHAR},
+      </if>
+      <if test="usrNotificationMethod != null">
+        #{usrNotificationMethod,jdbcType=CHAR},
+      </if>
+      <if test="usrViolationCount != null">
+        #{usrViolationCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.entity.UsrExample" resultType="java.lang.Long">
+    select count(*) from usr
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update usr
+    <set>
+      <if test="record.usrId != null">
+        usr_id = #{record.usrId,jdbcType=INTEGER},
+      </if>
+      <if test="record.usrUsername != null">
+        usr_username = #{record.usrUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usrEmail != null">
+        usr_email = #{record.usrEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usrPassword != null">
+        usr_password = #{record.usrPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usrType != null">
+        usr_type = #{record.usrType,jdbcType=CHAR},
+      </if>
+      <if test="record.usrNotificationMethod != null">
+        usr_notification_method = #{record.usrNotificationMethod,jdbcType=CHAR},
+      </if>
+      <if test="record.usrViolationCount != null">
+        usr_violation_count = #{record.usrViolationCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update usr
+    set usr_id = #{record.usrId,jdbcType=INTEGER},
+      usr_username = #{record.usrUsername,jdbcType=VARCHAR},
+      usr_email = #{record.usrEmail,jdbcType=VARCHAR},
+      usr_password = #{record.usrPassword,jdbcType=VARCHAR},
+      usr_type = #{record.usrType,jdbcType=CHAR},
+      usr_notification_method = #{record.usrNotificationMethod,jdbcType=CHAR},
+      usr_violation_count = #{record.usrViolationCount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.entity.Usr">
+    update usr
+    <set>
+      <if test="usrUsername != null">
+        usr_username = #{usrUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="usrEmail != null">
+        usr_email = #{usrEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="usrPassword != null">
+        usr_password = #{usrPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usrType != null">
+        usr_type = #{usrType,jdbcType=CHAR},
+      </if>
+      <if test="usrNotificationMethod != null">
+        usr_notification_method = #{usrNotificationMethod,jdbcType=CHAR},
+      </if>
+      <if test="usrViolationCount != null">
+        usr_violation_count = #{usrViolationCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where usr_id = #{usrId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Usr">
+    update usr
+    set usr_username = #{usrUsername,jdbcType=VARCHAR},
+      usr_email = #{usrEmail,jdbcType=VARCHAR},
+      usr_password = #{usrPassword,jdbcType=VARCHAR},
+      usr_type = #{usrType,jdbcType=CHAR},
+      usr_notification_method = #{usrNotificationMethod,jdbcType=CHAR},
+      usr_violation_count = #{usrViolationCount,jdbcType=INTEGER}
+    where usr_id = #{usrId,jdbcType=INTEGER}
+  </update>
+</mapper>

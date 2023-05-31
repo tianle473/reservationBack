@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.ReservationMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Reservation">
+    <id column="rsv_id" jdbcType="INTEGER" property="rsvId" />
+    <result column="rsv_user_id" jdbcType="INTEGER" property="rsvUserId" />
+    <result column="rsv_seat_id" jdbcType="INTEGER" property="rsvSeatId" />
+    <result column="rsv_start_time" jdbcType="TIMESTAMP" property="rsvStartTime" />
+    <result column="rsv_end_time" jdbcType="TIMESTAMP" property="rsvEndTime" />
+    <result column="rsv_check_in_time" jdbcType="TIMESTAMP" property="rsvCheckInTime" />
+    <result column="rsv_status" jdbcType="CHAR" property="rsvStatus" />
+    <result column="rsv_check_in_location" jdbcType="VARCHAR" property="rsvCheckInLocation" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    rsv_id, rsv_user_id, rsv_seat_id, rsv_start_time, rsv_end_time, rsv_check_in_time, 
+    rsv_status, rsv_check_in_location
+  </sql>
+  <select id="selectByExample" parameterType="com.example.demo.entity.ReservationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from reservation
+    where rsv_id = #{rsvId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reservation
+    where rsv_id = #{rsvId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.demo.entity.ReservationExample">
+    delete from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.entity.Reservation" useGeneratedKeys="true" keyColumn="rsv_id" keyProperty="rsvId">
+    insert into reservation (rsv_user_id, rsv_seat_id,
+      rsv_start_time, rsv_end_time, rsv_check_in_time, 
+      rsv_status, rsv_check_in_location)
+    values (#{rsvUserId,jdbcType=INTEGER}, #{rsvSeatId,jdbcType=INTEGER},
+      #{rsvStartTime,jdbcType=TIMESTAMP}, #{rsvEndTime,jdbcType=TIMESTAMP}, #{rsvCheckInTime,jdbcType=TIMESTAMP}, 
+      #{rsvStatus,jdbcType=CHAR}, #{rsvCheckInLocation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.entity.Reservation">
+    insert into reservation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rsvId != null">
+        rsv_id,
+      </if>
+      <if test="rsvUserId != null">
+        rsv_user_id,
+      </if>
+      <if test="rsvSeatId != null">
+        rsv_seat_id,
+      </if>
+      <if test="rsvStartTime != null">
+        rsv_start_time,
+      </if>
+      <if test="rsvEndTime != null">
+        rsv_end_time,
+      </if>
+      <if test="rsvCheckInTime != null">
+        rsv_check_in_time,
+      </if>
+      <if test="rsvStatus != null">
+        rsv_status,
+      </if>
+      <if test="rsvCheckInLocation != null">
+        rsv_check_in_location,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rsvId != null">
+        #{rsvId,jdbcType=INTEGER},
+      </if>
+      <if test="rsvUserId != null">
+        #{rsvUserId,jdbcType=INTEGER},
+      </if>
+      <if test="rsvSeatId != null">
+        #{rsvSeatId,jdbcType=INTEGER},
+      </if>
+      <if test="rsvStartTime != null">
+        #{rsvStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvEndTime != null">
+        #{rsvEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvCheckInTime != null">
+        #{rsvCheckInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvStatus != null">
+        #{rsvStatus,jdbcType=CHAR},
+      </if>
+      <if test="rsvCheckInLocation != null">
+        #{rsvCheckInLocation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.demo.entity.ReservationExample" resultType="java.lang.Long">
+    select count(*) from reservation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update reservation
+    <set>
+      <if test="record.rsvId != null">
+        rsv_id = #{record.rsvId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rsvUserId != null">
+        rsv_user_id = #{record.rsvUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rsvSeatId != null">
+        rsv_seat_id = #{record.rsvSeatId,jdbcType=INTEGER},
+      </if>
+      <if test="record.rsvStartTime != null">
+        rsv_start_time = #{record.rsvStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rsvEndTime != null">
+        rsv_end_time = #{record.rsvEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rsvCheckInTime != null">
+        rsv_check_in_time = #{record.rsvCheckInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rsvStatus != null">
+        rsv_status = #{record.rsvStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.rsvCheckInLocation != null">
+        rsv_check_in_location = #{record.rsvCheckInLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update reservation
+    set rsv_id = #{record.rsvId,jdbcType=INTEGER},
+      rsv_user_id = #{record.rsvUserId,jdbcType=INTEGER},
+      rsv_seat_id = #{record.rsvSeatId,jdbcType=INTEGER},
+      rsv_start_time = #{record.rsvStartTime,jdbcType=TIMESTAMP},
+      rsv_end_time = #{record.rsvEndTime,jdbcType=TIMESTAMP},
+      rsv_check_in_time = #{record.rsvCheckInTime,jdbcType=TIMESTAMP},
+      rsv_status = #{record.rsvStatus,jdbcType=CHAR},
+      rsv_check_in_location = #{record.rsvCheckInLocation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.entity.Reservation">
+    update reservation
+    <set>
+      <if test="rsvUserId != null">
+        rsv_user_id = #{rsvUserId,jdbcType=INTEGER},
+      </if>
+      <if test="rsvSeatId != null">
+        rsv_seat_id = #{rsvSeatId,jdbcType=INTEGER},
+      </if>
+      <if test="rsvStartTime != null">
+        rsv_start_time = #{rsvStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvEndTime != null">
+        rsv_end_time = #{rsvEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvCheckInTime != null">
+        rsv_check_in_time = #{rsvCheckInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rsvStatus != null">
+        rsv_status = #{rsvStatus,jdbcType=CHAR},
+      </if>
+      <if test="rsvCheckInLocation != null">
+        rsv_check_in_location = #{rsvCheckInLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rsv_id = #{rsvId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Reservation">
+    update reservation
+    set rsv_user_id = #{rsvUserId,jdbcType=INTEGER},
+      rsv_seat_id = #{rsvSeatId,jdbcType=INTEGER},
+      rsv_start_time = #{rsvStartTime,jdbcType=TIMESTAMP},
+      rsv_end_time = #{rsvEndTime,jdbcType=TIMESTAMP},
+      rsv_check_in_time = #{rsvCheckInTime,jdbcType=TIMESTAMP},
+      rsv_status = #{rsvStatus,jdbcType=CHAR},
+      rsv_check_in_location = #{rsvCheckInLocation,jdbcType=VARCHAR}
+    where rsv_id = #{rsvId,jdbcType=INTEGER}
+  </update>
+</mapper>
